@@ -1,4 +1,310 @@
 # Build and Release Folders
+package androidx.versionedparcelable;
+
+import android.os.Parcelable;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import p076n1.C4556b;
+import p102t.C4774a;
+
+/* renamed from: androidx.versionedparcelable.a */
+/* compiled from: VersionedParcel */
+public abstract class C1358a {
+
+    /* renamed from: a */
+    protected final C4774a<String, Method> f6086a;
+
+    /* renamed from: b */
+    protected final C4774a<String, Method> f6087b;
+
+    /* renamed from: c */
+    protected final C4774a<String, Class> f6088c;
+
+    public C1358a(C4774a<String, Method> aVar, C4774a<String, Method> aVar2, C4774a<String, Class> aVar3) {
+        this.f6086a = aVar;
+        this.f6087b = aVar2;
+        this.f6088c = aVar3;
+    }
+
+    /* renamed from: N */
+    private void m7167N(C4556b bVar) {
+        try {
+            mo6477I(m7168c(bVar.getClass()).getName());
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(bVar.getClass().getSimpleName() + " does not have a Parcelizer", e);
+        }
+    }
+
+    /* renamed from: c */
+    private Class m7168c(Class<? extends C4556b> cls) throws ClassNotFoundException {
+        Class cls2 = this.f6088c.get(cls.getName());
+        if (cls2 != null) {
+            return cls2;
+        }
+        Class<?> cls3 = Class.forName(String.format("%s.%sParcelizer", new Object[]{cls.getPackage().getName(), cls.getSimpleName()}), false, cls.getClassLoader());
+        this.f6088c.put(cls.getName(), cls3);
+        return cls3;
+    }
+
+    /* renamed from: d */
+    private Method m7169d(String str) throws IllegalAccessException, NoSuchMethodException, ClassNotFoundException {
+        Class<C1358a> cls = C1358a.class;
+        Method method = this.f6086a.get(str);
+        if (method != null) {
+            return method;
+        }
+        System.currentTimeMillis();
+        Method declaredMethod = Class.forName(str, true, cls.getClassLoader()).getDeclaredMethod("read", new Class[]{cls});
+        this.f6086a.put(str, declaredMethod);
+        return declaredMethod;
+    }
+
+    /* renamed from: e */
+    private Method m7170e(Class cls) throws IllegalAccessException, NoSuchMethodException, ClassNotFoundException {
+        Method method = this.f6087b.get(cls.getName());
+        if (method != null) {
+            return method;
+        }
+        Class c = m7168c(cls);
+        System.currentTimeMillis();
+        Method declaredMethod = c.getDeclaredMethod("write", new Class[]{cls, C1358a.class});
+        this.f6087b.put(cls.getName(), declaredMethod);
+        return declaredMethod;
+    }
+
+    /* access modifiers changed from: protected */
+    /* renamed from: A */
+    public abstract void mo6469A(byte[] bArr);
+
+    /* renamed from: B */
+    public void mo6470B(byte[] bArr, int i) {
+        mo6501w(i);
+        mo6469A(bArr);
+    }
+
+    /* access modifiers changed from: protected */
+    /* renamed from: C */
+    public abstract void mo6471C(CharSequence charSequence);
+
+    /* renamed from: D */
+    public void mo6472D(CharSequence charSequence, int i) {
+        mo6501w(i);
+        mo6471C(charSequence);
+    }
+
+    /* access modifiers changed from: protected */
+    /* renamed from: E */
+    public abstract void mo6473E(int i);
+
+    /* renamed from: F */
+    public void mo6474F(int i, int i2) {
+        mo6501w(i2);
+        mo6473E(i);
+    }
+
+    /* access modifiers changed from: protected */
+    /* renamed from: G */
+    public abstract void mo6475G(Parcelable parcelable);
+
+    /* renamed from: H */
+    public void mo6476H(Parcelable parcelable, int i) {
+        mo6501w(i);
+        mo6475G(parcelable);
+    }
+
+    /* access modifiers changed from: protected */
+    /* renamed from: I */
+    public abstract void mo6477I(String str);
+
+    /* renamed from: J */
+    public void mo6478J(String str, int i) {
+        mo6501w(i);
+        mo6477I(str);
+    }
+
+    /* access modifiers changed from: protected */
+    /* renamed from: K */
+    public <T extends C4556b> void mo6479K(T t, C1358a aVar) {
+        try {
+            m7170e(t.getClass()).invoke((Object) null, new Object[]{t, aVar});
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("VersionedParcel encountered IllegalAccessException", e);
+        } catch (InvocationTargetException e2) {
+            if (e2.getCause() instanceof RuntimeException) {
+                throw ((RuntimeException) e2.getCause());
+            }
+            throw new RuntimeException("VersionedParcel encountered InvocationTargetException", e2);
+        } catch (NoSuchMethodException e3) {
+            throw new RuntimeException("VersionedParcel encountered NoSuchMethodException", e3);
+        } catch (ClassNotFoundException e4) {
+            throw new RuntimeException("VersionedParcel encountered ClassNotFoundException", e4);
+        }
+    }
+
+    /* access modifiers changed from: protected */
+    /* renamed from: L */
+    public void mo6480L(C4556b bVar) {
+        if (bVar == null) {
+            mo6477I((String) null);
+            return;
+        }
+        m7167N(bVar);
+        C1358a b = mo6483b();
+        mo6479K(bVar, b);
+        b.mo6482a();
+    }
+
+    /* renamed from: M */
+    public void mo6481M(C4556b bVar, int i) {
+        mo6501w(i);
+        mo6480L(bVar);
+    }
+
+    /* access modifiers changed from: protected */
+    /* renamed from: a */
+    public abstract void mo6482a();
+
+    /* access modifiers changed from: protected */
+    /* renamed from: b */
+    public abstract C1358a mo6483b();
+
+    /* renamed from: f */
+    public boolean mo6484f() {
+        return false;
+    }
+
+    /* access modifiers changed from: protected */
+    /* renamed from: g */
+    public abstract boolean mo6485g();
+
+    /* renamed from: h */
+    public boolean mo6486h(boolean z, int i) {
+        if (!mo6491m(i)) {
+            return z;
+        }
+        return mo6485g();
+    }
+
+    /* access modifiers changed from: protected */
+    /* renamed from: i */
+    public abstract byte[] mo6487i();
+
+    /* renamed from: j */
+    public byte[] mo6488j(byte[] bArr, int i) {
+        if (!mo6491m(i)) {
+            return bArr;
+        }
+        return mo6487i();
+    }
+
+    /* access modifiers changed from: protected */
+    /* renamed from: k */
+    public abstract CharSequence mo6489k();
+
+    /* renamed from: l */
+    public CharSequence mo6490l(CharSequence charSequence, int i) {
+        if (!mo6491m(i)) {
+            return charSequence;
+        }
+        return mo6489k();
+    }
+
+    /* access modifiers changed from: protected */
+    /* renamed from: m */
+    public abstract boolean mo6491m(int i);
+
+    /* access modifiers changed from: protected */
+    /* renamed from: n */
+    public <T extends C4556b> T mo6492n(String str, C1358a aVar) {
+        try {
+            return (C4556b) m7169d(str).invoke((Object) null, new Object[]{aVar});
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("VersionedParcel encountered IllegalAccessException", e);
+        } catch (InvocationTargetException e2) {
+            if (e2.getCause() instanceof RuntimeException) {
+                throw ((RuntimeException) e2.getCause());
+            }
+            throw new RuntimeException("VersionedParcel encountered InvocationTargetException", e2);
+        } catch (NoSuchMethodException e3) {
+            throw new RuntimeException("VersionedParcel encountered NoSuchMethodException", e3);
+        } catch (ClassNotFoundException e4) {
+            throw new RuntimeException("VersionedParcel encountered ClassNotFoundException", e4);
+        }
+    }
+
+    /* access modifiers changed from: protected */
+    /* renamed from: o */
+    public abstract int mo6493o();
+
+    /* renamed from: p */
+    public int mo6494p(int i, int i2) {
+        if (!mo6491m(i2)) {
+            return i;
+        }
+        return mo6493o();
+    }
+
+    /* access modifiers changed from: protected */
+    /* renamed from: q */
+    public abstract <T extends Parcelable> T mo6495q();
+
+    /* renamed from: r */
+    public <T extends Parcelable> T mo6496r(T t, int i) {
+        if (!mo6491m(i)) {
+            return t;
+        }
+        return mo6495q();
+    }
+
+    /* access modifiers changed from: protected */
+    /* renamed from: s */
+    public abstract String mo6497s();
+
+    /* renamed from: t */
+    public String mo6498t(String str, int i) {
+        if (!mo6491m(i)) {
+            return str;
+        }
+        return mo6497s();
+    }
+
+    /* access modifiers changed from: protected */
+    /* renamed from: u */
+    public <T extends C4556b> T mo6499u() {
+        String s = mo6497s();
+        if (s == null) {
+            return null;
+        }
+        return mo6492n(s, mo6483b());
+    }
+
+    /* renamed from: v */
+    public <T extends C4556b> T mo6500v(T t, int i) {
+        if (!mo6491m(i)) {
+            return t;
+        }
+        return mo6499u();
+    }
+
+    /* access modifiers changed from: protected */
+    /* renamed from: w */
+    public abstract void mo6501w(int i);
+
+    /* renamed from: x */
+    public void mo6502x(boolean z, boolean z2) {
+    }
+
+    /* access modifiers changed from: protected */
+    /* renamed from: y */
+    public abstract void mo6503y(boolean z);
+
+    /* renamed from: z */
+    public void mo6504z(boolean z, int i) {
+        mo6501w(i);
+        mo6503y(z);
+    }
+}
+
 bin-debug/
 bin-release/
 [Oo]bj/
